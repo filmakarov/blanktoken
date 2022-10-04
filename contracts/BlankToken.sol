@@ -27,7 +27,7 @@ contract BlankToken is ERC721, Ownable, SignedAllowance {
     // it is actually the amount of minted tokens as we mint consistently startin from #0
     Counters.Counter private _tokenIds;
 
-    uint256 public constant MAX_ITEMS = 1000;
+    uint256 public constant MAX_ITEMS = 1400;
 
     string public baseURI;
     bool public saleState;
