@@ -265,13 +265,13 @@ async function signAllowance(account, mintQty, allowanceId, signerAccount = allo
     ).to.be.revertedWith('Presale not active');          
   });
 
-  /*
+  
 
   it('can not order Over Capacity', async function () {
   
     const mintQty = 1;
 
-    const capacity = 1000;
+    const capacity = await nftContract.MAX_ITEMS();
 
     const consoleProgressBar = new ConsoleProgressBar({ maxValue: capacity });
 
@@ -305,7 +305,7 @@ async function signAllowance(account, mintQty, allowanceId, signerAccount = allo
     ).to.be.revertedWith('>MaxSupply');          
   });
 
-  */
+  
 
 });
 
