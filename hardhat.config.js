@@ -13,15 +13,9 @@
 module.exports = {
   solidity: "0.8.14",
   networks: {
-    rinkeby: {
-      url: `https://eth-rinkeby.alchemyapi.io/v2/${alchemyApiKeyRinkeby}`,
-      gasPrice: 5000000000, //5 gwei
-      timeout: 3600000,
-      accounts: [`0x${privkey}`]
-    },
     goerli: {
-      url: `https://eth-goerli.alchemyapi.io/v2/${alchemyApiKeyRinkeby}`,
-      gasPrice: 5000000000, //5 gwei
+      url: `https://eth-goerli.alchemyapi.io/v2/${alchemyApiKeyMain}`,
+      gasPrice: 15000000000, //15 gwei
       timeout: 3600000,
       accounts: [`0x${privkey}`]
     },

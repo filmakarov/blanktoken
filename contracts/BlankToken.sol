@@ -10,6 +10,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@rari-capital/solmate/src/tokens/ERC721.sol";
 import "./SignedAllowance.sol";
+import "./Base64.sol";
 
 /// @title Blank Token
 /// @author of the contract filio.eth (twitter.com/filmakarov)
@@ -27,7 +28,7 @@ contract BlankToken is ERC721, Ownable, SignedAllowance {
     // it is actually the amount of minted tokens as we mint consistently startin from #0
     Counters.Counter private _tokenIds;
 
-    uint256 public constant MAX_ITEMS = 1400;
+    uint256 public constant MAX_ITEMS = 20;
 
     string public baseURI;
     bool public saleState;
@@ -90,8 +91,32 @@ contract BlankToken is ERC721, Ownable, SignedAllowance {
     //////////////////////////////////////////////////////////////*/
 
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
-        require(_exists(tokenId), "!token");
-        return string(abi.encodePacked(baseURI, tokenId.toString()));
+        require(_exists(tokenId), "Blank token: this token does not exist");
+
+        string memory json = string(abi.encodePacked('{"name": "Blank Token #', tokenId.toString(), '", "description": "Blank Studio is a curation platform enabling artists from a plethora of backgrounds to disrupt the digital world. Join our collective today to participate in future drops from our talented artists.", "external_url": "https://blankstudio.art", "image": "',baseURI, tokenMediaId(tokenId).toString(), '.mp4","attributes": [{"trait_type": "Category", "value": "', tokenCategory(tokenId) ,'"}]}'));
+        return string(abi.encodePacked('data:application/json;base64,', Base64.encode(bytes(json))));
+
+        //return string(abi.encodePacked(baseURI, tokenId.toString()));
+    }
+
+    function tokenMediaId(uint256 tokenId) internal pure returns (uint256) {
+        if (tokenId < MAX_ITEMS) {
+            return 0;
+        } else {
+            // from 1 to 5
+            return random(string(abi.encodePacked("MEDIA ID", tokenId.toString()))) % 5 + 1;
+        }
+    }
+
+    function tokenCategory(uint256 tokenId) internal pure returns (string memory) {
+        string[6] memory categories = ["Blank Token", "Focusing Partially Blank Token", 
+                                        "Goon Squad Blank Token", "Snack Blank Token",
+                                        "Sneep Deep Blank Token", "Stars Falling Blank Token"];
+        return categories[tokenMediaId(tokenId)];
+    }
+
+    function random(string memory input) internal pure returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(input)));
     }
 
     /*///////////////////////////////////////////////////////////////
